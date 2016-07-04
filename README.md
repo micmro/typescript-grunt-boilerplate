@@ -7,4 +7,4 @@ Simply run
 npm run serve
 ```
 
-This will start the `browser-sync` server, compiles and `browserify`s the typesctipt in the project.
+This will start the `browser-sync` server, compiles and `browserify`s the typescript in the project.
