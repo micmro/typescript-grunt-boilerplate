@@ -38,7 +38,6 @@ function bundle() {
 };
 
 //Gulp Tasks
-
 gulp.task("copy-html", function () {
 	return gulp.src(paths.pages)
 		.pipe(gulp.dest(paths.dist));
