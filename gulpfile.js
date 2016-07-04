@@ -18,16 +18,13 @@ var watchedBrowserify = watchify(browserify({
 	packageCache: {}
 }).plugin(tsify));
 
-gulp.task("copy-html", function () {
-	return gulp.src(paths.pages)
-		.pipe(gulp.dest(paths.dist));
+watchedBrowserify.on("update", function (file) {
+	console.log("updated file(s):", file)
+	bundle();
+	browserSync.reload()
 });
+watchedBrowserify.on("log", gutil.log);
 
-
-
-gulp.task("bundle", ["copy-html"], function () {
-	return bundle()
-})
 function bundle() {
 	return watchedBrowserify
 		.bundle()
@@ -40,18 +37,16 @@ function bundle() {
 		.pipe(gulp.dest(paths.dist));
 };
 
-gulp.task("default", ["copy-html", "bundle"]);
-watchedBrowserify.on("update", function (file) {
-	console.log("update", file)
-	bundle();
-	browserSync.reload()
+//Gulp Tasks
+
+gulp.task("copy-html", function () {
+	return gulp.src(paths.pages)
+		.pipe(gulp.dest(paths.dist));
 });
-watchedBrowserify.on("log", gutil.log);
 
-// use default task to launch Browsersync and watch JS files
+gulp.task("default", ["copy-html"], bundle);
+
 gulp.task('serve', ["default"], function () {
-
-	// Serve files from the root of this project
 	browserSync.init({
 		server: {
 			baseDir: paths.dist
